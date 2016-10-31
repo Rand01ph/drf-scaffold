@@ -1,0 +1,26 @@
+general:
+    debug: true
+database:
+    name: drf_project
+    user: test
+    password: test
+    host: 127.0.0.1
+    port: 3306
+static:
+    root: /tmp/static/
+log:
+    filepath: /var/log/drf_project/drf_project.log
+session:
+    host:
+    port: 6379
+    password: 'test'
+    db: 0
+    prefix: ''
+cache:
+    host:
+    port: 6379
+    password: 'test'
+    db: 0
+    prefix: ''
+cloud_api:
+    domain: api.com
