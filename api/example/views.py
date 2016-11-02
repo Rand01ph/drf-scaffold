@@ -22,10 +22,9 @@ from .serializers import ExampleSerializer
 
 logger = logging.getLogger(__name__)
 
-class ExampleView(mixins.RetrieveModelMixin,
+
+class ExampleView(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
-                  mixins.UpdateModelMixin,
-                  mixins.DestroyModelMixin,
                   generics.GenericAPIView):
 
     """
@@ -35,13 +34,11 @@ class ExampleView(mixins.RetrieveModelMixin,
     renderer_classes = (JSONRenderer, BrowsableAPIRenderer)
     parser_classes = (JSONParser,)
     queryset = Example.objects.all()
-    lookup_url_kwarg = ('event_id')
-    lookup_field = ('event_id')
     serializer_class = ExampleSerializer
 
     def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
+        queryset = self.filter_queryset(self.get_queryset())
+        serializer = self.get_serializer(queryset, many=True)
         return NormalResponse(result=serializer.data)
 
     def post(self, request, *args, **kwargs):
@@ -50,6 +47,25 @@ class ExampleView(mixins.RetrieveModelMixin,
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         return NormalResponse(result=ExampleSerializer(serializer.instance).data)
+
+
+class ExampleDetailView(mixins.RetrieveModelMixin,
+                        mixins.UpdateModelMixin,
+                        mixins.DestroyModelMixin,
+                        generics.GenericAPIView):
+
+
+    renderer_classes = (JSONRenderer, BrowsableAPIRenderer)
+    parser_classes = (JSONParser,)
+    queryset = Example.objects.all()
+    lookup_url_kwarg = ('event_id')
+    lookup_field = ('pk')
+    serializer_class = ExampleSerializer
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return NormalResponse(result=serializer.data)
 
     def put(self, request, *args, **kwargs):
         instance = self.get_object()

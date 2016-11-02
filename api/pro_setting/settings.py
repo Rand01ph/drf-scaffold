@@ -78,7 +78,9 @@ DATABASES = {
         'HOST': config['database']['host'],
         'PORT': config['database']['port'],
         'OPTIONS': {
-            'init_command': 'SET storage_engine=INNODB',
+            'init_command': 'SET '
+                'character_set_connection=utf8,'
+                'collation_connection=utf8_unicode_ci',
         }
     },
 }

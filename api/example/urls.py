@@ -14,4 +14,5 @@ from . import views
 
 urlpatterns = (
     url(r'^$', views.ExampleView.as_view()),
+    url(r'^(?P<event_id>[0-9]+)/$', views.ExampleDetailView.as_view()),
 )
